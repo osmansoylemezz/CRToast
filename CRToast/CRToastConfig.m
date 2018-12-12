@@ -77,7 +77,7 @@ BOOL CRToastInteractionResponderIsSwipe(CRToastInteractionType interactionType) 
     return CRToastInteractionTypeSwipe & interactionType;
 }
 
-BOOL CRToastInteractionResponderIsTap(interactionType) {
+BOOL CRToastInteractionResponderIsTap(CRToastInteractionType interactionType) {
     return CRToastInteractionTypeTap & interactionType;
 }
 
@@ -469,8 +469,10 @@ static NSDictionary *                kCRToastKeyClassMap                    = ni
     if (!_privateStatusBarView) {
         _privateStatusBarView = [[UIView alloc] initWithFrame:self.statusBarViewAnimationFrame1];
         if (self.snapshotWindow) {
+        __weak CRToast *weakSelf = self;
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[_privateStatusBarView addSubview:CRStatusBarSnapShotView(self.displayUnderStatusBar)];
+            __strong CRToast *strongSelf = weakSelf;
+			[strongSelf.privateStatusBarView addSubview:CRStatusBarSnapShotView(strongSelf.displayUnderStatusBar)];
 		});
         }
         _privateStatusBarView.clipsToBounds = YES;
