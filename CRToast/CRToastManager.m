@@ -74,7 +74,11 @@ typedef void (^CRToastAnimationStepBlock)(void);
 }
 
 + (BOOL)isShowingNotification {
-	return [[self manager] showingNotification];
+    if ([[self manager] showingNotification]) {
+        CRToast *notification = [[self manager] notification];
+        return (notification.state == CRToastStateEntering || notification.state == CRToastStateDisplaying);
+    }
+	return NO;
 }
 
 + (instancetype)manager {
